@@ -1,0 +1,56 @@
+### data configs
+
+data: 'synthetic'
+data_path: 'signal_first/averagesource1,source2,source3,target1_N100_n100.pth'
+tasks: ['source1', 'source2', 'source3', 'target1','target2']
+task_types: {'source1': 'continuous', 'source2': 'continuous', 'source3': 'continuous', 'target1': 'continuous','target2':'continuous'} # whether each task is continuous or discrete
+
+dim_x: 1 # input dimension
+dim_ys: {'source1': 1, 'source2': 1, 'source3': 1, 'target1': 1,'target2':1} # output dimensions or channels
+
+num_workers: 4
+
+
+n_steps: 200 # total training steps
+global_batch_size: 4 # number of datasets (multi-task functions) in a batch
+
+lr: 0.0025 # learning rate 0.0025
+lr_schedule: 'sqroot'
+lr_warmup: 10
+
+beta_G: 1 # beta coefficient for global kld
+beta_G_schedule: 'linear_warmup'
+beta_G_warmup: 100
+
+beta_T: 1 # beta coefficient for per-task klds
+beta_T_schedule: 'linear_warmup'
+beta_T_warmup: 100
+
+
+context_size: {'source1': 20, 'source2': 20 , 'source3': 20, 'target1': 4, 'target2': 4}
+target_size: {'source1': 40, 'source2': 40 , 'source3': 40, 'target1': 10, 'target2': 4}
+
+sample_counts: [100,100,100,5] #come back and see
+imbalance: 'proposed'
+
+
+### validation configs
+ns_G: 1 # number of global sampling
+ns_T: 1 # number of per-task samplings
+
+
+
+### model configs
+
+dim_hidden: 128 # width of the networks, serves as a basic unit in all layers except the input & output heads (and also the latent dimensions)
+module_sizes: [3, 3, 2, 5] # depth of the networks: (element-wise encoder, intra-task attention, inter-task attention, element-wise decoder)
+pma: True # whether to use PMA pooling rather than average pooling
+
+
+
+### logging configs
+
+log_iter: 10 # interval between tqdm and tensorboard logging of training metrics
+val_iter: 200 # interval between validation and tensorboard logging of validation metrics
+save_iter: 200 # interval between checkpointing
+log_dir: 'runs_imtp' # directory for saving checkpoints and logs

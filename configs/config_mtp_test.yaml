@@ -1,0 +1,22 @@
+### data configs
+
+data: 'synthetic'
+data_path: 'signal_first/testsource1,source2,source3,target1_N100_n100.pth'
+tasks: ['source1', 'source2', 'source3', 'target1']
+task_types: {'source1': 'continuous', 'source2': 'continuous', 'source3': 'continuous', 'target1': 'continuous'} # whether each task is continuous or discrete
+
+dim_x: 1 # input dimension
+dim_ys: {'source1': 1, 'source2': 1, 'source3': 1, 'target1': 1} # output dimensions or channels
+
+
+
+context_size: {'source1': 20, 'source2': 20 , 'source3': 20, 'target1': 4}
+#target_size: {'source1': 40, 'source2': 40 , 'source3': 40, 'target1': 10}
+
+
+### validation configs
+ns_G: 1 # number of global sampling
+ns_T: 1 # number of per-task samplings
+
+#eval_dir: 'runs_mtp_minimal' # directory where the models to evaluate are stored
+eval_dir: 'runs_mtp_RS'
