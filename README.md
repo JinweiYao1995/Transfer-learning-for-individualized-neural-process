@@ -37,37 +37,36 @@ config_mtp_RS.yaml           | Training setting for MTNP
 config_mtp_test.yaml         | Testing setting for MTNP
 config_single_iteration.yaml | Training setting for ANP
 config_single_test.yaml      | Testing setting for ANP
-
 ------------------------------------------------------------------------
 
-Project Structure
+Except for the mentioned files, the demo folder contains the following additional files:
 
-dataset/
-  - __init__.py: Initializes data loaders
-  - synthetic.py: Reads and balances data
-  - utils.py: Collates context and target sets, transfers to CUDA
+1. Folder 'dataset':
+   1.1 init.py: Initializes the data loader for creating batches of training and testing samples
+   1.2 synthetic.py: Preprocesses and reads data, and adjusts for data imbalance
+   1.3 utils.py: Defines the collator function to batch context and target sets and pass data into the CUDA environment
 
-Experiments/
-  - Stores trained models
+2. Folder 'Experiments': Path reserved for storing trained models
 
-signal_first/
-  - Stores signals generated from generate_data.py
+3. Folder 'signal_first': Path reserved for storing generated signals from 'generate_data.py'
 
-model/
-  - __init__.py: Loads model components
-  - attention.py: Defines attention modules
-  - mlp.py: Multi-layer perceptron components
-  - Modules/: Encoder and decoder components
-  - methods.py: Neural network structures for ANP, MTNP, proposed models
+4. Folder 'model':
+   4.1 init.py: Retrieves different models
+   4.2 attention.py: Creates the attention components
+   4.3 mlp.py: Creates multi-layer perceptron components
+   4.4 Modules: Creates encoder and decoder components
+   4.5 methods.py: Constructs neural network structures for ANP, MTNP, the proposed model, and the proposed model without sources
 
-Train/
-  - __init__.py: Initializes optimizers
-  - loss.py: Defines loss functions
-  - scheduler.py: Custom learning rate scheduler
-  - utils.py: Utility functions for training logs and outputs
+5. Folder 'Train':
+   5.1 init.py: Initializes the optimizer object
+   5.2 loss.py: Defines the loss objective function
+   5.3 scheduler.py: Custom scheduler for training Neural Processes
+   5.4 utils.py: Utility functions for storing training results
 
-------------------------------------------------------------------------
+6. argument.py: Sets up default arguments for constructing the experiments
 
-Additional Scripts
+7. generate_data.py: Constructs the signals in Setting I (Eq. 10 of the manuscript)
 
-- argument.py: Sets up default arg
+8. Run_compare.R: Implements MGP-based transfer learning in R
+
+9. TrainData.R: Prepares the data in Signal Setting I in R
