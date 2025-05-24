@@ -4,15 +4,15 @@ Simulation Reproduction for Boxplot of Fig. 5 (Signal Setting I)
 
 This repository provides code to reproduce the simulation results shown in Figure 5 of the manuscript under Signal Setting I. To run the simulation and generate the boxplot, execute:
 
-python execution.py
+**python execution.py**
 
 ------------------------------------------------------------------------
 
 Implementation Overview
 
 The execution.py script integrates:
-- A training stage (via main.py)
-- A testing stage (via test.py)
+- A training stage (via **main.py**)
+- A testing stage (via **test.py**)
 
 The training stage covers the following methods:
 1. Attentive Neural Process (ANP)
@@ -21,7 +21,7 @@ The training stage covers the following methods:
 4. Proposed method without source
 5. MGP-based transfer learning
 
-Note: Training takes approximately 15 hours for all methods combined. The testing stage executes almost instantly.
+Note: Training takes approximately **16 hours** for all methods combined (80 RMSE). The testing stage executes almost instantly.
 
 ------------------------------------------------------------------------
 
@@ -41,23 +41,23 @@ config_single_test.yaml      | Testing setting for ANP
 
 Except for the mentioned files, the demo folder contains the following additional files:
 
-1. Folder 'dataset':
+1. Folder **dataset**:
    1.1 init.py: Initializes the data loader for creating batches of training and testing samples
    1.2 synthetic.py: Preprocesses and reads data, and adjusts for data imbalance
    1.3 utils.py: Defines the collator function to batch context and target sets and pass data into the CUDA environment
 
-2. Folder 'Experiments': Path reserved for storing trained models
+2. Folder **Experiments**: Path reserved for storing trained models
 
-3. Folder 'signal_first': Path reserved for storing generated signals from 'generate_data.py'
+3. Folder **signal_first**: Path reserved for storing generated signals from 'generate_data.py'
 
-4. Folder 'model':
+4. Folder **model**:
    4.1 init.py: Retrieves different models
    4.2 attention.py: Creates the attention components
    4.3 mlp.py: Creates multi-layer perceptron components
    4.4 Modules: Creates encoder and decoder components
    4.5 methods.py: Constructs neural network structures for ANP, MTNP, the proposed model, and the proposed model without sources
 
-5. Folder 'Train':
+5. Folder **Train**:
    5.1 init.py: Initializes the optimizer object
    5.2 loss.py: Defines the loss objective function
    5.3 scheduler.py: Custom scheduler for training Neural Processes
