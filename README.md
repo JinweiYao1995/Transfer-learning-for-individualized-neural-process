@@ -42,26 +42,26 @@ config_single_test.yaml      | Testing setting for ANP
 Except for the mentioned files, the demo folder contains the following additional files:
 
 1. Folder **dataset**:
-   1.1 init.py: Initializes the data loader for creating batches of training and testing samples
-   1.2 synthetic.py: Preprocesses and reads data, and adjusts for data imbalance
-   1.3 utils.py: Defines the collator function to batch context and target sets and pass data into the CUDA environment
+   - 1.1 init.py: Initializes the data loader for creating batches of training and testing samples
+   - 1.2 synthetic.py: Preprocesses and reads data, and adjusts for data imbalance
+   - 1.3 utils.py: Defines the collator function to batch context and target sets and pass data into the CUDA environment
 
 2. Folder **Experiments**: Path reserved for storing trained models
 
 3. Folder **signal_first**: Path reserved for storing generated signals from 'generate_data.py'
 
 4. Folder **model**:
-   4.1 init.py: Retrieves different models
-   4.2 attention.py: Creates the attention components
-   4.3 mlp.py: Creates multi-layer perceptron components
-   4.4 Modules: Creates encoder and decoder components
-   4.5 methods.py: Constructs neural network structures for ANP, MTNP, the proposed model, and the proposed model without sources
+   - 4.1 init.py: Retrieves different models
+   - 4.2 attention.py: Creates the attention components
+   - 4.3 mlp.py: Creates multi-layer perceptron components
+   - 4.4 Modules: Creates encoder and decoder components
+   - 4.5 methods.py: Constructs neural network structures for ANP, MTNP, the proposed model, and the proposed model without sources
 
 5. Folder **Train**:
-   5.1 init.py: Initializes the optimizer object
-   5.2 loss.py: Defines the loss objective function
-   5.3 scheduler.py: Custom scheduler for training Neural Processes
-   5.4 utils.py: Utility functions for storing training results
+   - 5.1 init.py: Initializes the optimizer object
+   - 5.2 loss.py: Defines the loss objective function
+   - 5.3 scheduler.py: Custom scheduler for training Neural Processes
+   - 5.4 utils.py: Utility functions for storing training results
 
 6. argument.py: Sets up default arguments for constructing the experiments
 
