@@ -180,7 +180,7 @@ for(v1 in 1:length(test_x)){
   }
 }
 
-rep_time = 40
+rep_time = 80
 RMSE<-array(0, dim = c(rep_time,1))
 H_prop<-lapply(1:4,function(i){array(NA,dim = c(rep_time,4*n+4))})
 ypred_prop<-array(NA,dim = c(rep_time,length(tpoints)))
