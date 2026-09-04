@@ -8,7 +8,7 @@ task_types: {'source1': 'continuous', 'source2': 'continuous', 'source3': 'conti
 dim_x: 1 # input dimension
 dim_ys: {'source1': 1, 'source2': 1, 'source3': 1, 'target1': 1,'target2':1} # output dimensions or channels
 
-num_workers: 4
+num_workers: 0
 
 
 n_steps: 200 # total training steps

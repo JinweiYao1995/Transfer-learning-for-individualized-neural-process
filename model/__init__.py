@@ -1,7 +1,4 @@
-#import os
-#import torch
-
-from .methods import MTP, STP, IMTP, IMTPs
+from .methods import MTP, STP, IMTP, IMTPs, MTNPKD
 
 
 def get_model(config, device):
@@ -13,6 +10,7 @@ def get_model(config, device):
         return IMTP(config).to(device)
     elif config.model == 'imtps':
         return IMTPs(config).to(device)
+    elif config.model == 'mtnpkd':
+        return MTNPKD(config).to(device)
     else:
         raise NotImplementedError
-    

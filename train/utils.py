@@ -66,7 +66,7 @@ def configure_experiment(config, args):
     log_keys = ['nll_normalized'] + [f'nll_{task}' for task in config.tasks]
     if config.model in ['mtp']:
         log_keys.append('kld_G')
-    if config.model in ['imtp','imtps','mtp','stp']:
+    if config.model in ['imtp','imtps','mtp','stp','mtnpkd']:
         log_keys += ['kld_T_normalized'] + [f'kld_{task}' for task in config.tasks]
     for log_key in log_keys:
         logger.register_key(log_key)
@@ -79,7 +79,7 @@ def get_schedulers(optimizer, config):
     beta_G_scheduler = beta_T_scheduler = None
     if config.model in ['mtp']:    
         beta_G_scheduler = HPScheduler(config, 'beta_G', config.beta_G_schedule, config.beta_G, config.n_steps, config.beta_G_warmup)
-    if config.model in ['mtp','stp', 'imtps','imtp']:    
+    if config.model in ['mtp','stp', 'imtps','imtp','mtnpkd']:
         beta_T_scheduler = HPScheduler(config, 'beta_T', config.beta_T_schedule, config.beta_T, config.n_steps, config.beta_T_warmup)
     
     return lr_scheduler, beta_G_scheduler, beta_T_scheduler

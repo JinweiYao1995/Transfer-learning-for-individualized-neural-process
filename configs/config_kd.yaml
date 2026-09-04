@@ -1,0 +1,64 @@
+### data configs (MTNP-KD: single-task ANP student distilled from the MTNP teacher)
+
+data: 'synthetic'
+data_path: 'signal_first/averagesource1,source2,source3,target1_N100_n100.pth'
+tasks: ['target2']
+task_types: {'target2': 'continuous'} # whether each task is continuous or discrete
+
+dim_x: 1 # input dimension
+dim_ys: {'target2': 1} # output dimensions or channels
+
+num_workers: 0 # the per-individual loop re-creates DataLoaders; >0 deadlocks on Windows
+
+
+### training configs (copied from config_imtp)
+
+n_steps: 200 # total training steps per individual
+global_batch_size: 4 # number of datasets (multi-task functions) in a batch
+
+lr: 0.0025 # learning rate
+lr_schedule: 'sqroot'
+lr_warmup: 10
+
+beta_G: 1 # unused on the single-task path, kept so get_schedulers never misses a key
+beta_G_schedule: 'linear_warmup'
+beta_G_warmup: 100
+
+beta_T: 1 # beta coefficient for per-task klds
+beta_T_schedule: 'linear_warmup'
+beta_T_warmup: 100
+
+
+context_size: {'target2': 4} # overwritten per context (6/8/10) by execution.py
+target_size: {'target2': 4}
+
+sample_counts: [5] # the 'proposed' imbalance mode only uses max(); 5 repeats >= batch of 4
+imbalance: 'proposed' # the only mode with the target2/individual branch
+
+### KD configs
+
+lambda_kd_max: 0.5 # weight of the distillation term after warmup
+kd_warmup_frac: 0.2 # lambda warms up linearly over the first 20% of n_steps
+kd_K: 20 # teacher latent samples for moment matching
+teacher_ckpt: 'experiments/runs_mtp_RS/mtp/checkpoint1/best_error.pth' # frozen MTNP
+teacher_config: 'configs/config_mtp_test.yaml' # teacher-side contexts = MTNP evaluation convention
+
+
+### validation configs
+ns_G: 1 # number of global sampling
+ns_T: 1 # number of per-task samplings
+
+
+### model configs (same capacity as the ANP baseline)
+
+dim_hidden: 128 # width of the networks (and the latent dimensions)
+module_sizes: [3, 3, 2, 5] # depth: (element-wise encoder, intra-task attention, inter-task attention, element-wise decoder)
+pma: True # PMA pooling rather than average pooling
+
+
+### logging configs
+
+log_iter: 10
+val_iter: 200
+save_iter: 200
+log_dir: 'runs_kd' # directory for saving checkpoints and logs

@@ -528,3 +528,13 @@ class STP(nn.Module):
         
 
 
+
+
+class MTNPKD(STP):
+    """
+    MTNP-KD benchmark: a single-task ANP student distilled from a frozen MTNP
+    teacher. The architecture is identical to STP so the student has the same
+    capacity as the ANP baseline; the distillation term lives in
+    train.trainer.train_step_kd, not in the model.
+    """
+    pass

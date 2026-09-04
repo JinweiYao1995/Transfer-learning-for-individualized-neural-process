@@ -69,14 +69,16 @@ def generate_data(n_functions, n_points, independent=True):
 
 if __name__ == '__main__':
     import argparse
-    import matplotlib.pyplot as plt
 
-    #create the training data set 
+    #create the training data set
     parser = argparse.ArgumentParser()
     parser.add_argument('--n_functions', type=int, default=100)
     parser.add_argument('--n_points', type=int, default=100)
     parser.add_argument('--independent', '-ind', default=True, action='store_true')
+    parser.add_argument('--seed', type=int, default=0)
     args = parser.parse_args()
+
+    torch.manual_seed(args.seed)   # reproducible signals
 
     #create first sample dataset
     X, Y, Xperm, Yperm, XD, YD = generate_data(args.n_functions, args.n_points, args.independent)
@@ -142,27 +144,30 @@ if __name__ == '__main__':
     
     
     torch.save((X, Y_comp_m, Xperm_mean, Yperm_mean, XDmean, YDmean), os.path.join(data_dir, f'average{name}.pth'))
-    
-    #X, Y are the original data, with the replication as the original data 
-    #Xperm and Yperm are randomly orderred target for generating XC and YC, with the replication as the original data  
-    #XD and YD are unorderred target points, with the replication as the original data 
-    
-    
-    # Visualization of the generated signal
-    plt.figure(figsize=(20, 4))
-    count = 0
-    for task in tasks:
-        x = X[task]
-        y = Y[task][0]
-        # Create subplots, assuming you want a 2x4 grid (8 subplots)
-        plt.subplot(1, 5, count + 1)       
-        # Plot the data for each task
-        plt.plot(x, y, color='k')      
-        plt.legend(loc='upper left')
-        plt.title(f'Task {task}')
-        count += 1
-    plt.tight_layout()
-    plt.show() 
+
+    #X, Y are the original data, with the replication as the original data
+    #Xperm and Yperm are randomly orderred target for generating XC and YC, with the replication as the original data
+    #XD and YD are unorderred target points, with the replication as the original data
+
+
+    # raw<name>.pth: the "Proposed w/o mean" data. Same tasks as the average
+    # file, but target1 keeps the sample_counts[-1]=5 RAW curves the mean was
+    # computed from, tiled deterministically (row i <- curve i % 5) up to the
+    # sources' 100 rows, instead of being replaced by their mean. target2 (the
+    # 80 test individuals) is carried over unchanged.
+    N_RAW = sample_counts[-1]
+    tile = torch.arange(args.n_functions) % N_RAW
+    Y_raw = {t: Y[t].clone() for t in Y}
+    Xperm_raw = {t: Xperm[t].clone() for t in Xperm}
+    Yperm_raw = {t: Yperm[t].clone() for t in Yperm}
+    YD_raw = {t: YD[t].clone() for t in YD}
+    Y_raw['target1'] = Y['target1'][tile]
+    Xperm_raw['target1'] = Xperm['target1'][tile]
+    Yperm_raw['target1'] = Yperm['target1'][tile]
+    YD_raw['target1'] = YD['target1'][tile]
+    torch.save((X, Y_raw, Xperm_raw, Yperm_raw, XD, YD_raw), os.path.join(data_dir, 'raw.pth'))
+
+    print('saved', data_dir, ':', f'{name}.pth,', f'test{name}.pth,', f'average{name}.pth,', 'raw.pth')
     
 
     
