@@ -42,10 +42,10 @@ exists**, so it is safe to interrupt and rerun; progress is printed to stdout.
    `experiments/<run>/<model>/checkpoint<i>/full_<cc><cc>.pth`.
 4. **Baseline evaluation** — ANP and MTNP conditioned on the 80 test
    individuals at each context (cached in `experiments/baseline_rmse.pth`).
-5. **MGP (optional)** — if `Rscript` is on the PATH, `Run_compare.R` fits the
-   MGP transfer-learning benchmark on the exported CSVs and writes
-   `down_original.Rdata`. Without R (or without `pyreadr` on the Python side)
-   the figure is simply drawn without the MGP column.
+5. **MGP (optional)** — if `Rscript` is on the PATH, `MGP/Run_compare.R` fits
+   the MGP transfer-learning benchmark on the exported CSVs and writes
+   `MGP/down_original.Rdata`. Without R (or without `pyreadr` on the Python
+   side) the figure is simply drawn without the MGP column.
 6. **Figure** — `compare_3context.png`.
 
 ### Runtime
@@ -86,8 +86,7 @@ run so the shortened checkpoints are not mistaken for finished stages.
 | `model/methods.py` | the models — ANP (`STP`), MTNP (`MTP`), Proposed (`IMTP`), w/o source (`IMTPs`), MTNP-KD student (`MTNPKD`) |
 | `train/` | losses, LR/beta schedulers, experiment utilities |
 | `train/trainer.py` | `train_step`, `train_step_kd`, `moment_match_teacher`, evaluation |
-| `Run_compare.R` | MGP-based transfer learning (reads the exported CSVs) |
-| `TrainData.R` | R-side data preparation shared by `Run_compare.R` |
+| `MGP/` | the R implementation of the MGP benchmark: `Run_compare.R` (model fitting, reads the exported CSVs) and `TrainData.R` (R-side data preparation) |
 
 ### Configs
 

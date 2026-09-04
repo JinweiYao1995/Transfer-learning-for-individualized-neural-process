@@ -65,7 +65,8 @@ CONTEXTS = [int(c) for c in os.environ.get('MTNP_CONTEXTS', '6,8,10').split(',')
 DATA_NAME = 'source1,source2,source3,target1_N100_n100'
 KD_LAMBDA = 0.5          # distillation weight used for the reported MTNP-KD results
 BASELINE_RMSE = os.path.join('experiments', 'baseline_rmse.pth')
-MGP_RDATA = 'down_original.Rdata'
+MGP_DIR = 'MGP'          # the R implementation lives in its own folder
+MGP_RDATA = os.path.join(MGP_DIR, 'down_original.Rdata')
 FIGURE = 'compare_3context.png'
 
 METHODS = ['ANP', 'MTNP', 'MTNP-KD', 'Proposed', 'Proposed w/o source',
@@ -105,12 +106,12 @@ def ensure_data():
     else:
         log('[data] signal_first/ already populated -> skip')
     # CSV export of the same signals for the R (MGP) benchmark
-    if not os.path.exists('target2.csv'):
+    if not os.path.exists(os.path.join(MGP_DIR, 'target2.csv')):
         import pandas as pd
         _, Y, _, _, _, _ = torch.load(os.path.join('signal_first', f'{DATA_NAME}.pth'))
         for key, tensor in Y.items():
-            pd.DataFrame(tensor.squeeze(-1).numpy()).to_csv(f'{key}.csv', index=False)
-        log('[data] CSVs for the R benchmark written')
+            pd.DataFrame(tensor.squeeze(-1).numpy()).to_csv(os.path.join(MGP_DIR, f'{key}.csv'), index=False)
+        log('[data] CSVs for the R benchmark written to MGP/')
 
 
 # ---------------------------------------------------------------------------
@@ -310,8 +311,8 @@ def run_mgp():
     if shutil.which('Rscript') is None:
         log('[MGP] Rscript not found on PATH -> the figure is drawn WITHOUT the MGP column')
         return False
-    log('[MGP] running Run_compare.R (this is the slowest R stage; expect hours)')
-    result = subprocess.run(['Rscript', 'Run_compare.R'], capture_output=True, text=True)
+    log('[MGP] running MGP/Run_compare.R (this is the slowest R stage; expect hours)')
+    result = subprocess.run(['Rscript', 'Run_compare.R'], cwd=MGP_DIR, capture_output=True, text=True)
     if result.returncode != 0 or not os.path.exists(MGP_RDATA):
         log('[MGP] Run_compare.R failed -> the figure is drawn WITHOUT the MGP column')
         log(result.stderr[-2000:])
